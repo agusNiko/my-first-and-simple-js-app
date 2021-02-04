@@ -1,13 +1,8 @@
-let myName='Bob';
-document.write(myName);
+alert('Hi Eveline! i´m glad to be back! :D')
 
-myName = 'John Doe';
-document.write(myName);
+let favoriteFood = 'Venezuelan Empanadas,  '
 
-let simpleAddition = 2 + 2;
-document.write(simpleAddition);
+document.write(favoriteFood);
 
-let size = 100; 
-let doubleSize = size * 2;
-let minSize = (doubleSize  * 2) - (size / 2);
-document.write(minSize);
+
+document.write('this is an Empanada: <img src="css/empanadas.jpg" alt="a picture of an Empanada" width="300px">');
