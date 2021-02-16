@@ -11,19 +11,31 @@ let pokemonRepository = (function() {
             if( properties[0] === "name" && properties[1] === "height" && properties[2] === "type" && properties[3] === "abilities") {
                 pokemonList.push(pokemon);
             } else {
-                alert(`${pokemon} wrong format, the pokemon can not be add`)
-            }
+                let stringifiedObject = JSON.stringify(pokemon);
+                alert(`${stringifiedObject} wrong format, the pokemon can not be added`)
+                }
         } else {
             alert(`${pokemon} is not a pokemon`)        
         }
     }
+
+    function unshiftPokemon(pokemon) {
+        return pokemonList.unshift(pokemon)
+    }
+
+    function remove(pokemon) {
+        return pokemonList.pop(pokemon);
+    }
+    
     function getAll() {
         return pokemonList;
     }
-    
+   
     return {
         add: add,
-        getAll: getAll
+        getAll: getAll,
+        remove: remove,
+        unshiftPokemon: unshiftPokemon
     };
 })();
 
@@ -106,6 +118,8 @@ let venonat = {
 
 pokemonRepository.add(venonat);
 
+//pokemonRepository.unshiftPokemon(venonat);
+
 
 // -------------------------- here I change the "for loop" to a "forEach loop" the result is the same. 
 pokemonRepository.getAll().forEach(function(item){  
@@ -120,5 +134,9 @@ pokemonRepository.getAll().forEach(function(item){
 var bugPokemon = pokemonRepository.getAll().filter(function(bugs) {
     return bugs.type == "bug";
 }); 
+
 // filter bug type pokemons 
  console.log(bugPokemon)  
+
+
+ 
