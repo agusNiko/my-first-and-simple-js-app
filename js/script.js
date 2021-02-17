@@ -4,20 +4,25 @@ let pokemonRepository = (function() {
     
         // this wraps the pokemonList array in an Immediately Invoked Function Expression (IIFE) to avoid accidentally accessing the global state.
     function add(pokemon) {
-        
-    properties = Object.keys(pokemon)
-            //the first conditional control if the pokemon that is trying to be added is an object. the second controls if the properties match the desired properties. 
-        if (typeof pokemon === 'object'){ 
-            if( properties[0] === "name" && properties[1] === "height" && properties[2] === "type" && properties[3] === "abilities") {
-                pokemonList.push(pokemon);
+        properties = Object.keys(pokemon)
+                //the first conditional control if the pokemon that is trying to be added is an object. the second controls if the properties match the desired properties. 
+            if (typeof pokemon === 'object'){ 
+                if( properties[0] === "name" && 
+                    properties[1] === "height" && 
+                    properties[2] === "type" && 
+                    properties[3] === "abilities"
+                ) {
+                    pokemonList.push(pokemon);
+                } else {
+                    let stringifiedObject = JSON.stringify(pokemon);
+                    alert(`${stringifiedObject} wrong format, the pokemon can not be added`)
+                    }
             } else {
-                let stringifiedObject = JSON.stringify(pokemon);
-                alert(`${stringifiedObject} wrong format, the pokemon can not be added`)
-                }
-        } else {
-            alert(`${pokemon} is not a pokemon`)        
-        }
+                alert(`${pokemon} is not a pokemon`)        
+            }
     }
+
+   
 
     function unshiftPokemon(pokemon) {
         return pokemonList.unshift(pokemon)
@@ -30,12 +35,38 @@ let pokemonRepository = (function() {
     function getAll() {
         return pokemonList;
     }
+
+    function addListItem(pokemon){
+        let ulItem = document.querySelector('.pokemon-list');
+        let listItem = document.createElement('li');
+        ulItem.appendChild(listItem);
+        listItem.classList.add('pokemon-li');
+    
+        let button = document.createElement('button');
+        button.innerText = `${pokemon.name}`;  
+        listItem.appendChild(button);
+        button.classList.add('pokemon-button');
+
+        button.addEventListener('click', showDetails) // I created the event listener but it doesnt log in the console
+        
+        button.addEventListener('click', function () {
+            console.log(pokemon)
+          });
+    }
+
    
+    function showDetails(pokemon){
+        console.log(pokemon);
+    }
+    
     return {
         add: add,
         getAll: getAll,
+        addListItem: addListItem,
         remove: remove,
-        unshiftPokemon: unshiftPokemon
+        unshiftPokemon: unshiftPokemon,
+        addListItem: addListItem,
+        showDetails: showDetails
     };
 })();
 
@@ -87,7 +118,25 @@ pokemonRepository.add(caterpie);
 
 console.log(pokemonRepository.getAll())
 
+pokemonRepository.getAll().forEach(function(pokemon){  
+    pokemonRepository.addListItem(pokemon)
+})
 
+
+
+var bugPokemon = pokemonRepository.getAll().filter(function(bugs) {
+    return bugs.type == "bug";
+}); 
+
+// filter bug type pokemons 
+ console.log(bugPokemon)
+
+
+
+
+
+// -------------------------------------------------------this code was replaced by the IIFE     and the for each loop---------------------
+//
 // pokemonList.unshift(pikachu); // similar to push but adds the element at the biginnin
 
 // pokemonList[4] = caterpie; // this comand adds an element at the specified index [4] of the array;
@@ -107,6 +156,7 @@ console.log(pokemonRepository.getAll())
 // printPokemonList(pokemonList/*argument*/); // calling a the function; */
 
 
+/*   objects with wrong format  to check if the conditionals inside IIFE works.
 pokemonRepository.add('tomate') // this is not a pokemon
 
 let venonat = {
@@ -119,24 +169,6 @@ let venonat = {
 pokemonRepository.add(venonat);
 
 //pokemonRepository.unshiftPokemon(venonat);
-
-
+*/
 // -------------------------- here I change the "for loop" to a "forEach loop" the result is the same. 
-pokemonRepository.getAll().forEach(function(item){  
-    if (item.height <= 0.3 ) {
-        document.write(`<p> ${item.name} (height: ${item.height}m) - So cute! That's a really tiny Pokémon! </p>`);   
-    } else {
-    document.write(`<p> ${item.name} (height: ${item.height}m)</p>`);    
-    }
-})
 
-
-var bugPokemon = pokemonRepository.getAll().filter(function(bugs) {
-    return bugs.type == "bug";
-}); 
-
-// filter bug type pokemons 
- console.log(bugPokemon)  
-
-
- 

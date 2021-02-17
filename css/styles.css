@@ -13,8 +13,28 @@
       font-family: 'Roboto Mono', monospace;
   }
  
-  p {
+  p,
+  .pokemon-list {
       margin: auto;
       max-width: 600px;
       font-size: calc(0.75em + 1vw);
+      font-size
       }
+  
+
+.pokemon-li{
+  display: flex;
+  justify-content: center;
+  list-style: none;
+}
+.pokemon-button{
+  margin: 5px;
+  width: 80%;
+  max-width: 300px;
+  padding: 15px;
+  
+  display: block;
+
+  color:blue;
+}
+
