@@ -21,9 +21,7 @@ let pokemonRepository = (function() {
                 alert(`${pokemon} is not a pokemon`)        
             }
     }
-
-   
-
+    
     function unshiftPokemon(pokemon) {
         return pokemonList.unshift(pokemon)
     }
@@ -42,31 +40,39 @@ let pokemonRepository = (function() {
         ulItem.appendChild(listItem);
         listItem.classList.add('pokemon-li');
     
-        let button = document.createElement('button');
-        button.innerText = `${pokemon.name}`;  
-        listItem.appendChild(button);
-        button.classList.add('pokemon-button');
+        let newButton = document.createElement('button');
+        newButton.innerText = `${pokemon.name}`;  
+        listItem.appendChild(newButton);
+        newButton.classList.add('pokemon-button');
 
-        button.addEventListener('click', showDetails) // I created the event listener but it doesnt log in the console
-        
-        button.addEventListener('click', function () {
-            console.log(pokemon)
+        newButton.addEventListener('click', function () {
+            console.log(pokemon.name)
           });
+        
+        newButton.addEventListener('click', function () {
+            showDetails(pokemon)
+        });
+        
+        showDetailsFromOutside(newButton, pokemon);
     }
 
-   
     function showDetails(pokemon){
-        console.log(pokemon);
+        console.log(pokemon.type);
     }
-    
+
+    function showDetailsFromOutside (button, pokemon) {
+        button.addEventListener('click', function () {
+            console.log(`height: ${pokemon.height}`);
+    })};
+
     return {
         add: add,
         getAll: getAll,
         addListItem: addListItem,
         remove: remove,
         unshiftPokemon: unshiftPokemon,
-        addListItem: addListItem,
-        showDetails: showDetails
+        showDetails: showDetails,
+        showDetailsFromOutside: showDetailsFromOutside
     };
 })();
 
