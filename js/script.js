@@ -1,35 +1,27 @@
 
 let pokemonRepository = (function() {
     let pokemonList = [];                //defining the variable pokemon list as an blank Array
-    
+    let apiUrl='https://pokeapi.co/api/v2/pokemon/?limit=150'; //the API
+        
         // this wraps the pokemonList array in an Immediately Invoked Function Expression (IIFE) to avoid accidentally accessing the global state.
     function add(pokemon) {
         properties = Object.keys(pokemon)
+        console.log(properties);
                 //the first conditional control if the pokemon that is trying to be added is an object. the second controls if the properties match the desired properties. 
             if (typeof pokemon === 'object'){ 
                 if( properties[0] === "name" && 
-                    properties[1] === "height" && 
-                    properties[2] === "type" && 
-                    properties[3] === "abilities"
+                properties[1] === "detailsUrl" 
                 ) {
                     pokemonList.push(pokemon);
                 } else {
                     let stringifiedObject = JSON.stringify(pokemon);
-                    alert(`${stringifiedObject} wrong format, the pokemon can not be added`)
+                   console.log(`${stringifiedObject} wrong format, the pokemon can not be added`)
                     }
             } else {
-                alert(`${pokemon} is not a pokemon`)        
+                console.log(`${pokemon} is not a pokemon`);        
             }
     }
-    
-    function unshiftPokemon(pokemon) {
-        return pokemonList.unshift(pokemon)
-    }
 
-    function remove(pokemon) {
-        return pokemonList.pop(pokemon);
-    }
-    
     function getAll() {
         return pokemonList;
     }
@@ -46,35 +38,114 @@ let pokemonRepository = (function() {
         newButton.classList.add('pokemon-button');
 
         newButton.addEventListener('click', function () {
-            console.log(pokemon.name)
-          });
+            console.log('name: ' + pokemon.name)
+            if (pokemon.name === 'pikachu') {
+                newButton.appendChild(pikachu);
+            } else if (pokemon.name === 'bulbasaur') {
+                newButton.appendChild(bulbasaur);
+            }else if (pokemon.name === 'charmander') {
+                    newButton.appendChild(charmander);// adding img from js ( just to practice)
+            }          
+        });  // creates a event listener, when the button is clicked console logs the name... here the function is define as the second parameter.
         
         newButton.addEventListener('click', function () {
-            showDetails(pokemon)
-        });
+            showDetails(pokemon)               
+        }); // creates a event listener, when the button is clicked console logs the type... similar to the last one but here the function is define outside the addListItem fuction. and called as 2d parameter
         
-        showDetailsFromOutside(newButton, pokemon);
+        showDetailsFromOutside(newButton, pokemon); // here the event listener is declare as a function outside, when the button is clicked console logs the height... 
     }
 
     function showDetails(pokemon){
-        console.log(pokemon.type);
-    }
+        loadDetails(pokemon).then(function(){
+            console.log('type: '+ pokemon.types);
+        })
+        } 
+    
 
     function showDetailsFromOutside (button, pokemon) {
         button.addEventListener('click', function () {
-            console.log(`height: ${pokemon.height}`);
-    })};
+            loadDetails(pokemon).then(function(){
+                console.log('height '+ pokemon.height);
+            });
+    })}; // this funcion is to be called from addListItem to listen to the click of a previously created button 
+     
+    
+    //----- adding img from js---------------- ( just to practice)
+    var pikachu = document.createElement("img"); 
+    pikachu.src = 'js/pikachu.png'; 
+
+    var bulbasaur = document.createElement('img');
+    bulbasaur.src = 'js/bulbasaur.png'
+    
+    var charmander = document.createElement('img');
+    charmander.src = 'js/charmander.png'
+
+
+
+    //-------------------fetch pokemon list from API----
+
+    function loadList() {
+        return fetch(apiUrl).then(function (response) {
+          return response.json();
+        }).then(function (json) {
+            json.results.forEach(function (item) { //json is the API object in json format. result is the Key of the object whose values are the pokemons. this also creates an object forEach pokemon
+                let pokemon = {
+                name: item.name,
+                detailsUrl: item.url
+                };
+                add(pokemon); // add the newly created object to the pokemon list array
+            });
+        }).catch(function (e) {
+            console.error(e);
+        })
+      }
+
+      function loadDetails(item) {
+        let url = item.detailsUrl;
+        return fetch(url).then(function (response) {
+          return response.json();
+        }).then(function (details) { //details is the parameter that would be the return value of the previous function
+          // Now we add the details to the item
+          item.imageUrl = details.sprites.front_default; //sprites is the key of the object with the imgs
+          item.height = details.height;
+          item.types = []; 
+          
+          details.types.forEach(function(pokemon){
+              item.types.push(pokemon.type.name)
+          })
+        }).catch(function (e) {
+          console.error(e);
+        });
+      }
+
 
     return {
         add: add,
         getAll: getAll,
         addListItem: addListItem,
-        remove: remove,
-        unshiftPokemon: unshiftPokemon,
         showDetails: showDetails,
-        showDetailsFromOutside: showDetailsFromOutside
+        showDetailsFromOutside: showDetailsFromOutside,
+        loadList: loadList,
+        loadDetails: loadDetails
     };
 })();
+
+pokemonRepository.loadList().then(function() {
+    pokemonRepository.getAll().forEach(function(pokemon){  
+        pokemonRepository.addListItem(pokemon)
+    });    
+});
+console.log(pokemonRepository.getAll());
+
+
+
+
+
+
+
+
+
+/*
 
 // I created different variables with the name of the Pokémon, then assigned them a object with its different properties.
 let pikachu =  {
@@ -124,9 +195,6 @@ pokemonRepository.add(caterpie);
 
 console.log(pokemonRepository.getAll())
 
-pokemonRepository.getAll().forEach(function(pokemon){  
-    pokemonRepository.addListItem(pokemon)
-})
 
 
 
@@ -138,9 +206,40 @@ var bugPokemon = pokemonRepository.getAll().filter(function(bugs) {
  console.log(bugPokemon)
 
 
+ let examplePromise = new Promise(function (resolve, reject) {
+    let sum;
+    setTimeout(function(){
+      sum = 5 + 4;
+      if(sum > 10) {
+        resolve(sum);
+      }else{
+        reject('The promise has been rejected');
+      }     
+    }, 0);
+  });
+  
+  console.log('some piece of code');
+
+  examplePromise
+  .then(function(result){
+    console.log(result);
+  })
+  .catch(function(error){
+    console.log(error);
+  });
+  
+  console.log('another piece of code');
 
 
 
+  let venonat = {
+    NAME: 'Venonat', // the Key is Uppercase. it sould show an alert when trying to add it to pokemonRepository
+    height:  1.0, 
+    type: 'bug', 
+    abilities: ['Compoundeyes', 'Tinted-lens']
+};
+pokemonRepository.add(venonat);
+ 
 // -------------------------------------------------------this code was replaced by the IIFE     and the for each loop---------------------
 //
 // pokemonList.unshift(pikachu); // similar to push but adds the element at the biginnin
@@ -149,7 +248,7 @@ var bugPokemon = pokemonRepository.getAll().filter(function(bugs) {
 
 // console.log(pokemonList); 
 
-// function printPokemonList(list/*parameter*/){ // declaring a the function
+// function printPokemonList(list/*parameter*///){  declaring a the function
 // for (let i = 0; i < list.length; i++) {
 //     if (list[i].height <= 0.3 ) {
 //         document.write(`<p> ${list[i].name} (height: ${list[i].height}m) - So cute! That's a really tiny Pokémon! </p>`);   
