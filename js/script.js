@@ -26,6 +26,30 @@ let pokemonRepository = (function() {
         return pokemonList;
     }
 
+    function loadList() { 
+        
+        showLoadingMessage();
+                
+        return fetch(apiUrl).then(function (response) {
+
+            setTimeout(function(){hideLoadingMessage() }, 1000);
+
+            return response.json();
+
+        }).then(function (json) {
+            json.results.forEach(function (item) { //json is the API object in json format. result is the Key of the object whose values are the pokemons. this also creates an object forEach pokemon
+                let pokemon = {
+                name: item.name,
+                detailsUrl: item.url
+                };
+                add(pokemon); // add the newly created object to the pokemon list array
+            });
+        }).catch(function (e) {
+            console.error(e);
+        })
+      }
+     
+
     function addListItem(pokemon){
         let ulItem = document.querySelector('.pokemon-list');
         let listItem = document.createElement('li');
@@ -71,53 +95,52 @@ let pokemonRepository = (function() {
      
     
     //----- adding img from js---------------- ( just to practice)
-    var pikachu = document.createElement("img"); 
-    pikachu.src = 'js/pikachu.png'; 
+        var pikachu = document.createElement("img"); 
+        pikachu.src = 'js/pikachu.png'; 
 
-    var bulbasaur = document.createElement('img');
-    bulbasaur.src = 'js/bulbasaur.png'
-    
-    var charmander = document.createElement('img');
-    charmander.src = 'js/charmander.png'
+        var bulbasaur = document.createElement('img');
+        bulbasaur.src = 'js/bulbasaur.png'
+        
+        var charmander = document.createElement('img');
+        charmander.src = 'js/charmander.png'
 
+  //-------------------fetch pokemon list from API----
 
-
-    //-------------------fetch pokemon list from API----
-
-    function loadList() {
-        return fetch(apiUrl).then(function (response) {
-          return response.json();
-        }).then(function (json) {
-            json.results.forEach(function (item) { //json is the API object in json format. result is the Key of the object whose values are the pokemons. this also creates an object forEach pokemon
-                let pokemon = {
-                name: item.name,
-                detailsUrl: item.url
-                };
-                add(pokemon); // add the newly created object to the pokemon list array
-            });
-        }).catch(function (e) {
-            console.error(e);
-        })
-      }
-
-      function loadDetails(item) {
+    function loadDetails(item) {
+        showLoadingMessage ();
         let url = item.detailsUrl;
         return fetch(url).then(function (response) {
-          return response.json();
-        }).then(function (details) { //details is the parameter that would be the return value of the previous function
-          // Now we add the details to the item
-          item.imageUrl = details.sprites.front_default; //sprites is the key of the object with the imgs
-          item.height = details.height;
-          item.types = []; 
-          
-          details.types.forEach(function(pokemon){
-              item.types.push(pokemon.type.name)
-          })
-        }).catch(function (e) {
-          console.error(e);
-        });
-      }
 
+            setTimeout(function(){hideLoadingMessage() }, 1000);
+
+            return response.json();
+        }).then(function (details) { //details is the parameter that would be the return value of the previous function
+            // Now we add the details to the item
+            item.imageUrl = details.sprites.front_default; //sprites is the key of the object with the imgs
+            item.height = details.height;
+            item.types = []; 
+            
+            details.types.forEach(function(pokemon){
+                item.types.push(pokemon.type.name)
+            })
+        }).catch(function (e) {
+        console.error(e);
+        });
+    }
+    
+    function showLoadingMessage (){
+        let loadingContainer = document.querySelector('.loading-message');
+        let loadingMessage = document.createElement('h1');
+        loadingMessage.innerText='Loading list...'
+        return loadingContainer.appendChild(loadingMessage);
+    };
+
+    function hideLoadingMessage(){
+        let elementToRemove = document.querySelector('.loading-message');
+        let remove = document.querySelector('h1')
+        elementToRemove.removeChild(remove)
+    };
+            
 
     return {
         add: add,
@@ -126,7 +149,9 @@ let pokemonRepository = (function() {
         showDetails: showDetails,
         showDetailsFromOutside: showDetailsFromOutside,
         loadList: loadList,
-        loadDetails: loadDetails
+        loadDetails: loadDetails,
+        showLoadingMessage: showLoadingMessage,
+        hideLoadingMessage: hideLoadingMessage
     };
 })();
 
@@ -136,14 +161,6 @@ pokemonRepository.loadList().then(function() {
     });    
 });
 console.log(pokemonRepository.getAll());
-
-
-
-
-
-
-
-
 
 /*
 
