@@ -15,10 +15,10 @@ let pokemonRepository = (function() {
                     pokemonList.push(pokemon);
                 } else {
                     let stringifiedObject = JSON.stringify(pokemon);
-                   console.log(`${stringifiedObject} wrong format, the pokemon can not be added`)
+                   alert(`${stringifiedObject} wrong format, the pokemon can not be added`)
                     }
             } else {
-                console.log(`${pokemon} is not a pokemon`);        
+                alert(`${pokemon} is not a pokemon`);        
             }
     }
 
@@ -63,32 +63,32 @@ let pokemonRepository = (function() {
         listItem.appendChild(newButton);
         newButton.classList.add('pokemon-button');
 
-        newButton.addEventListener('click', function () {
-            console.log('name: ' + pokemon.name) 
-            //showModal (pokemon.name, pokemon.height);       
-        });  // creates a event listener, when the button is clicked console logs the name... here the function is define as the second parameter.
+        // newButton.addEventListener('click', function () { //----this code is to practice the createEventListener() inside the function and outside the function and  
+        //     console.log('name: ' + pokemon.name) 
+        //     //showModal (showModal (pokemon.name, 'height: ' + pokemon.height, 'type: ' + pokemon.types, pokemon.image));       
+        // });  // creates a event listener, when the button is clicked console logs the name... here the function is define as the second parameter.
         
         newButton.addEventListener('click', function () {
-            showDetails(pokemon)               
+            showDetails(pokemon);               
         }); // creates a event listener, when the button is clicked console logs the type... similar to the last one but here the function is define outside the addListItem fuction. and called as 2d parameter
         
-        showDetailsFromOutside(newButton, pokemon); // here the event listener is declare as a function outside, when the button is clicked console logs the height... 
+        //showDetailsFromOutside(newButton, pokemon); // here the event listener is declare as a function outside, when the button is clicked console logs the height... this code is to practice the createEventListener() inside the function and outside the function and  
     }
 
     function showDetails(pokemon){
         loadDetails(pokemon).then(function(){
-            console.log('type: '+ pokemon.types);
+           
             showModal (pokemon.name, 'height: ' + pokemon.height, 'type: ' + pokemon.types, pokemon.image);
         })
         }
     
 
-    function showDetailsFromOutside (button, pokemon) {
-        button.addEventListener('click', function () {
-            loadDetails(pokemon).then(function(){
-                console.log('height '+ pokemon.height);
-            });
-    })}; // this funcion is to be called from addListItem to listen to the click of a previously created button 
+    // function showDetailsFromOutside (button, pokemon) { //
+    //     button.addEventListener('click', function () {
+    //         loadDetails(pokemon).then(function(){
+    //             showModal (pokemon.name, 'height: ' + pokemon.height, 'type: ' + pokemon.types, pokemon.image);
+    //         }); 
+   // })}; // this funcion is to be called from addListItem to listen to the click of a previously created button 
      
 
   //-------------------fetch pokemon list from API----
@@ -207,8 +207,34 @@ let pokemonRepository = (function() {
         }
     } );
 
-    //------            dialog code        -------------
+    
 
+    
+    return {
+        add: add,
+        getAll: getAll,
+        addListItem: addListItem,
+        showDetails: showDetails,
+        //showDetailsFromOutside: showDetailsFromOutside,
+        loadList: loadList,
+        loadDetails: loadDetails,
+        showLoadingMessage: showLoadingMessage,
+        hideLoadingMessage: hideLoadingMessage
+        
+    };
+})();
+
+pokemonRepository.loadList().then(function() {
+    pokemonRepository.getAll().forEach(function(pokemon){  
+        pokemonRepository.addListItem(pokemon)
+    });    
+});
+
+
+
+
+//------            dialog code        -------------
+    //to use this function it muss be copied inside the Immediately Invoked Function Expression IIFE and adapt the parameter of showDialog() to the new created parameter of showModal()
     // function showDialog(tittle, text) {
     //     showModal(tittle, text);
 
@@ -247,31 +273,6 @@ let pokemonRepository = (function() {
     //         alert('not confirmed');
     //       });
     // }); ------------------------------dialog code ends--------------
-
-
-    
-    return {
-        add: add,
-        getAll: getAll,
-        addListItem: addListItem,
-        showDetails: showDetails,
-        showDetailsFromOutside: showDetailsFromOutside,
-        loadList: loadList,
-        loadDetails: loadDetails,
-        showLoadingMessage: showLoadingMessage,
-        hideLoadingMessage: hideLoadingMessage
-        
-    };
-})();
-
-pokemonRepository.loadList().then(function() {
-    pokemonRepository.getAll().forEach(function(pokemon){  
-        pokemonRepository.addListItem(pokemon)
-    });    
-});
-console.log(pokemonRepository.getAll());
-
-
 
 
 
