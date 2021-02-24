@@ -15,10 +15,22 @@
     </header>
     <main>
       <div class="loading-message"></div>
+
+      <!-- <button id='show-dialog'>
+        Show dialog
+      </button> --> 
+      <!-- this button is for the show dialog function. see JS doc -->
+
+      <div id='modal-container'>
+      </div>
+      
       <ul class="pokemon-list"></ul>
+      
+
     </main>
     <script src="js/promise-polyfill.js"></script>
     <script src="js/fetch-polyfill.js"></script>
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>   <!-- polyfill for Touch Interactions via Pointer Events in safari -->  
     <script src="js/script.js"></script>
   </body>
 </html>
