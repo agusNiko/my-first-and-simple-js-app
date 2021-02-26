@@ -6,8 +6,8 @@ let pokemonRepository = (function() {
         // this wraps the pokemonList array in an Immediately Invoked Function Expression (IIFE) to avoid accidentally accessing the global state.
     function add(pokemon) {
         properties = Object.keys(pokemon)
-      //  console.log(properties);
-                //the first conditional control if the pokemon that is trying to be added is an object. the second controls if the properties match the desired properties. 
+
+             //the first conditional control if the pokemon that is trying to be added is an object. the second controls if the properties match the desired properties. 
             if (typeof pokemon === 'object'){ 
                 if( properties[0] === "name" && 
                 properties[1] === "detailsUrl" 
@@ -31,8 +31,6 @@ let pokemonRepository = (function() {
         showLoadingMessage();
                 
         return fetch(apiUrl).then(function (response) {
-
-            
 
             return response.json();
 
@@ -76,9 +74,12 @@ let pokemonRepository = (function() {
     }
 
     function showDetails(pokemon){
+        let index = pokemonList.indexOf(pokemon);
+        let nextPokemon = pokemonList[index + 1]
+        let previousPokemon = pokemonList[index - 1]
         loadDetails(pokemon).then(function(){
            
-            showModal (pokemon.name, 'height: ' + pokemon.height, 'type: ' + pokemon.types, pokemon.image);
+            showModal (pokemon.name, pokemon.height, pokemon.types, pokemon.image, nextPokemon, previousPokemon);
         })
         }
     
@@ -94,6 +95,7 @@ let pokemonRepository = (function() {
   //-------------------fetch pokemon list from API----
 
     function loadDetails(item) {
+        console.log(item);
         showLoadingMessage ();
         let url = item.detailsUrl;
         return fetch(url).then(function (response) {
@@ -131,7 +133,10 @@ let pokemonRepository = (function() {
         // --------------------- Modal Code
     let modalContainer = document.querySelector('#modal-container');
 
-    function showModal (title, text, type,imgUrl) {
+    function showModal (title, text, type, imgUrl, nextPokemon, previousPokemon) {
+
+        text = 'height: ' + text;
+        type = 'type: ' + type;
         
                 //next, we add the content of the modal with js...
 
@@ -143,7 +148,14 @@ let pokemonRepository = (function() {
             modalContainer.appendChild(modal);
         
             // add modal content: 
-                //Close button
+    
+            // let modalHeader = new Image();
+            // modalHeader.src = "js/pokedex.svg";
+            // modalHeader.classList.add('pokedex-svg')
+            //     modal.appendChild(modalHeader);
+
+
+             //Close button             
         let modalClose = document.createElement('button');
         modalClose.classList.add('modal-close');
         modalClose.innerText = 'Close';
@@ -174,6 +186,48 @@ let pokemonRepository = (function() {
         imageElement.classList.add('image-pokemon')
         modal.appendChild(imageElement);
 
+
+           // -------------------next button
+        
+        
+
+        let nextPreviousConteiner = document.createElement('div');
+        nextPreviousConteiner.classList.add('next-previous-container')
+            modal.appendChild(nextPreviousConteiner);
+
+            if (previousPokemon !== undefined){
+                let previousButton = document.createElement('button');
+                previousButton.classList.add('previous-button');
+                previousButton.innerText = 'previous';
+                
+                nextPreviousConteiner.appendChild(previousButton);
+    
+                previousButton.addEventListener('click', function () { 
+                    hideModal (); 
+                
+                    showDetails(previousPokemon);
+                });
+            }
+
+        let extraDiv = document.createElement('div');
+        nextPreviousConteiner.appendChild(extraDiv);
+
+        if (nextPokemon !== undefined){
+            let nextButton = document.createElement('button');
+            nextButton.classList.add('next-button');
+            nextButton.innerText = 'next';
+            nextPreviousConteiner.appendChild(nextButton);
+
+                nextButton.addEventListener('click', function () { 
+                hideModal (); 
+
+                showDetails(nextPokemon);
+            });
+        }
+            
+
+            //-------------------
+      
             //hide modal clicking outside the modal
         modalContainer.addEventListener('click', (e) => {
             let target = e.target;
@@ -206,10 +260,7 @@ let pokemonRepository = (function() {
             hideModal();
         }
     } );
-
-    
-
-    
+   
     return {
         add: add,
         getAll: getAll,
@@ -233,46 +284,46 @@ pokemonRepository.loadList().then(function() {
 
 
 
-//------            dialog code        -------------
-    //to use this function it muss be copied inside the Immediately Invoked Function Expression IIFE and adapt the parameter of showDialog() to the new created parameter of showModal()
-    // function showDialog(tittle, text) {
-    //     showModal(tittle, text);
+// ------            dialog code        -------------
+//     to use this function it muss be copied inside the Immediately Invoked Function Expression IIFE and adapt the parameter of showDialog() to the new created parameter of showModal()
+//     function showDialog(tittle, text) {
+//         showModal(tittle, text);
 
-    //     // add confirm and cancel button to the modal
-    //     let modal = modalContainer.querySelector('.modal');
+//         // add confirm and cancel button to the modal
+//         let modal = modalContainer.querySelector('.modal');
 
-    //     let confirmButton = document.createElement('button');
-    //     confirmButton.classList.add('modal-confirm');
-    //     confirmButton.innerText = 'Confirm';
+//         let confirmButton = document.createElement('button');
+//         confirmButton.classList.add('modal-confirm');
+//         confirmButton.innerText = 'Confirm';
 
-    //     let cancelButton = document.createElement('button');
-    //     cancelButton.classList.add('modal-cancel');
-    //     cancelButton.innerText = 'Cancel';
+//         let cancelButton = document.createElement('button');
+//         cancelButton.classList.add('modal-cancel');
+//         cancelButton.innerText = 'Cancel';
 
-    //     modal.appendChild(confirmButton);
-    //     modal.appendChild(cancelButton);
+//         modal.appendChild(confirmButton);
+//         modal.appendChild(cancelButton);
 
-    //     confirmButton.focus();// We want to focus the confirmButton so that the user can simply press Enter
+//         confirmButton.focus();// We want to focus the confirmButton so that the user can simply press Enter
 
-    //     return new Promise((resolve, reject) => {
-    //         cancelButton.addEventListener('click', hideModal);
-    //         confirmButton.addEventListener('click', () => {
-    //           dialogPromiseReject = null; // Reset this
-    //           hideModal();
-    //           resolve();
-    //         });
-    //         // This can be used to reject from other functions
-    //         dialogPromiseReject = reject;
-    //       });
-    // };
+//         return new Promise((resolve, reject) => {
+//             cancelButton.addEventListener('click', hideModal);
+//             confirmButton.addEventListener('click', () => {
+//               dialogPromiseReject = null; // Reset this
+//               hideModal();
+//               resolve();
+//             });
+//             // This can be used to reject from other functions
+//             dialogPromiseReject = reject;
+//           });
+//     };
 
-    // document.querySelector('#show-dialog').addEventListener('click', function () {
-    //     showDialog('Confirm action','Are you sure you want to do this?').then(function() {
-    //         alert('confirmed!');
-    //       }, () => {
-    //         alert('not confirmed');
-    //       });
-    // }); ------------------------------dialog code ends--------------
+//     document.querySelector('#show-dialog').addEventListener('click', function () {
+//         showDialog('Confirm action','Are you sure you want to do this?').then(function() {
+//             alert('confirmed!');
+//           }, () => {
+//             alert('not confirmed');
+//           });
+//     }); ------------------------------dialog code ends--------------
 
 
 
