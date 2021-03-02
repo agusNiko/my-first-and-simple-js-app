@@ -54,12 +54,16 @@ let pokemonRepository = (function() {
         let ulItem = document.querySelector('.pokemon-list');
         let listItem = document.createElement('li');
         ulItem.appendChild(listItem);
-        listItem.classList.add('pokemon-li');
+        listItem.classList.add('group-list-item');
     
         let newButton = document.createElement('button');
         newButton.innerText = `${pokemon.name}`;  
         listItem.appendChild(newButton);
-        newButton.classList.add('pokemon-button');
+        newButton.classList.add('btn');
+        newButton.classList.add('btn-primary');
+        newButton.classList.add('btn-lg');
+        newButton.classList.add('btn-block');
+        
 
         // newButton.addEventListener('click', function () { //----this code is to practice the createEventListener() inside the function and outside the function and  
         //     console.log('name: ' + pokemon.name) 
