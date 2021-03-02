@@ -63,7 +63,12 @@ let pokemonRepository = (function() {
         newButton.classList.add('btn-primary');
         newButton.classList.add('btn-lg');
         newButton.classList.add('btn-block');
-        
+        newButton.dataset.target = "#exampleModal";
+        newButton.dataset.toggle = "modal"
+
+       
+
+   
 
         // newButton.addEventListener('click', function () { //----this code is to practice the createEventListener() inside the function and outside the function and  
         //     console.log('name: ' + pokemon.name) 
@@ -139,77 +144,76 @@ let pokemonRepository = (function() {
 
     function showModal (title, text, type, imgUrl, nextPokemon, previousPokemon) {
 
-        // let modalBody = $(".modal-body");
-        // let modalHeader = $(".modal-header");
-        // let modalTitle = $(".modal-title");
+        let modalBody = document.querySelector('.modal-body')
+        let tittleElement = document.querySelector('.modal-title')
+       
+      
 
         text = 'height: ' + text;
         type = 'type: ' + type;
    
+                modalBody.innerText= "";
+                tittleElement.innerText= "";
 
-                modalBody.empty();
-                modalTitle.empty();
-
-       
-        let tittleElement = document.querySelector('.modal-title')
+         
         tittleElement.innerText = title;
-            modal.appendChild(tittleElement);
+           
 
                 //modal Paragraf
         let contentElement = document.createElement('p');
         contentElement.innerText = text;
-            modal.appendChild(contentElement);
+        modalBody.appendChild(contentElement);
 
                //modal Paragraf 2; 
         let typeElement = document.createElement('p');
         typeElement.innerText = type;
-            modal.appendChild(typeElement);
+        modalBody.appendChild(typeElement);
 
                // add imgage
 
         let imageElement = new Image();
         imageElement.src = imgUrl;
         imageElement.classList.add('image-pokemon')
-        modal.appendChild(imageElement);
+        modalBody.appendChild(imageElement);
 
 
-           // -------------------next button
+        //    // -------------------next button
         
         
 
-        let nextPreviousConteiner = document.createElement('div');
-        nextPreviousConteiner.classList.add('next-previous-container')
-            modal.appendChild(nextPreviousConteiner);
+        // let nextPreviousConteiner = document.createElement('div');
+        // nextPreviousConteiner.classList.add('next-previous-container')
+        //     modal.appendChild(nextPreviousConteiner);
 
-            if (previousPokemon !== undefined){
-                let previousButton = document.createElement('button');
-                previousButton.classList.add('previous-button');
-                previousButton.innerText = 'previous';
+        //     if (previousPokemon !== undefined){
+        //         let previousButton = document.createElement('button');
+        //         previousButton.classList.add('previous-button');
+        //         previousButton.innerText = 'previous';
                 
-                nextPreviousConteiner.appendChild(previousButton);
+        //         nextPreviousConteiner.appendChild(previousButton);
     
-                previousButton.addEventListener('click', function () { 
-                    hideModal (); 
+        //         previousButton.addEventListener('click', function () { 
+        //             hideModal (); 
                 
-                    showDetails(previousPokemon);
-                });
-            }
+        //             showDetails(previousPokemon);
+        //         });
+        //     }
 
-        let extraDiv = document.createElement('div');
-        nextPreviousConteiner.appendChild(extraDiv);
+        // let extraDiv = document.createElement('div');
+        // nextPreviousConteiner.appendChild(extraDiv);
 
-        if (nextPokemon !== undefined){
-            let nextButton = document.createElement('button');
-            nextButton.classList.add('next-button');
-            nextButton.innerText = 'next';
-            nextPreviousConteiner.appendChild(nextButton);
+        // if (nextPokemon !== undefined){
+        //     let nextButton = document.createElement('button');
+        //     nextButton.classList.add('next-button');
+        //     nextButton.innerText = 'next';
+        //     nextPreviousConteiner.appendChild(nextButton);
 
-                nextButton.addEventListener('click', function () { 
-                hideModal (); 
+        //         nextButton.addEventListener('click', function () { 
+        //         hideModal (); 
 
-                showDetails(nextPokemon);
-            });
-        }
+        //         showDetails(nextPokemon);
+        //     });
+        // }
             
 
             //-------------------
