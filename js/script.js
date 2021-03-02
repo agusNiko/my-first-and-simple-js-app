@@ -122,6 +122,8 @@ let pokemonRepository = (function() {
         let loadingMessage = document.createElement('h1');
         loadingMessage.innerText='Loading list...'
         return loadingContainer.appendChild(loadingMessage);
+
+        
     };
 
     function hideLoadingMessage(){
