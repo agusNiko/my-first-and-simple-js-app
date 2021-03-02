@@ -135,41 +135,23 @@ let pokemonRepository = (function() {
     };
 
         // --------------------- Modal Code
-    let modalContainer = document.querySelector('#modal-container');
+    let modalContainer = document.querySelector('#exampleModal');
 
     function showModal (title, text, type, imgUrl, nextPokemon, previousPokemon) {
 
+        // let modalBody = $(".modal-body");
+        // let modalHeader = $(".modal-header");
+        // let modalTitle = $(".modal-title");
+
         text = 'height: ' + text;
         type = 'type: ' + type;
-        
-                //next, we add the content of the modal with js...
+   
 
-        modalContainer.innerText = ''; // clear all existing code (important cause it clean the previous pokemon info).
+                modalBody.empty();
+                modalTitle.empty();
 
-            //crate the div .modal.
-        let modal = document.createElement('div');
-        modal.classList.add('modal');
-            modalContainer.appendChild(modal);
-        
-            // add modal content: 
-    
-            // let modalHeader = new Image();
-            // modalHeader.src = "js/pokedex.svg";
-            // modalHeader.classList.add('pokedex-svg')
-            //     modal.appendChild(modalHeader);
-
-
-             //Close button             
-        let modalClose = document.createElement('button');
-        modalClose.classList.add('modal-close');
-        modalClose.innerText = 'Close';
-            modal.appendChild(modalClose);
-
-        modalClose.addEventListener('click', function () { //calls the hideModal() so removes the .is-visible. it Has to be call from inside this function because here is the created element.
-                hideModal (); 
-            });
-                //Modal title
-        let tittleElement = document.createElement('h1');
+       
+        let tittleElement = document.querySelector('.modal-title')
         tittleElement.innerText = title;
             modal.appendChild(tittleElement);
 

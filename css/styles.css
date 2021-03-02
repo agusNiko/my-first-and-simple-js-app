@@ -1,0 +1,8 @@
+.pokemon-list{
+  margin: auto;
+}
+
+.group-list-item{
+  padding: 5px;
+  list-style:none;
+}
