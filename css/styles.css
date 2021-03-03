@@ -7,10 +7,12 @@
   list-style:none;
 }
 
-.image-pokemon{
-  margin: auto;
-}
 
 p{
   text-align: center;
+}
+
+
+.image-pokemon{
+  margin: auto;
 }
