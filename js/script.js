@@ -123,20 +123,17 @@ let pokemonRepository = (function() {
         // --------------------- Modal Code
   
 
-    function showModal (title, text, type, imgUrl, nextPokemon, previousPokemon) {
+    function showModal (title, text, type, imgUrl) {
 
         let modalBody = document.querySelector('.modal-body')
         let tittleElement = document.querySelector('.modal-title')
        
-      
-
         text = 'height: ' + text;
         type = 'type: ' + type;
    
         modalBody.innerText= "";
         tittleElement.innerText= "";
 
-         
         tittleElement.innerText = title;
            
 
@@ -157,7 +154,6 @@ let pokemonRepository = (function() {
         imageElement.classList.add('image-pokemon')
         modalBody.appendChild(imageElement);
 
-
     };
 
     return {
@@ -169,7 +165,6 @@ let pokemonRepository = (function() {
         loadDetails: loadDetails,
         showLoadingMessage: showLoadingMessage,
         hideLoadingMessage: hideLoadingMessage
-        
     };
 })();
 
