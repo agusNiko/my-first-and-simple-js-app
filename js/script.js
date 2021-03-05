@@ -148,13 +148,7 @@ let pokemonRepository = (function() {
     modalContainer.appendChild(modal);
         
     // add modal content: 
-    
-    // let modalHeader = new Image();
-    // modalHeader.src = "js/pokedex.svg";
-    // modalHeader.classList.add('pokedex-svg')
-    //     modal.appendChild(modalHeader);
-
-
+ 
     //Close button             
     let modalClose = document.createElement('button');
     modalClose.classList.add('modal-close');

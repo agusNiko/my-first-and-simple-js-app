@@ -1,7 +1,9 @@
+/* eslint-disable no-prototype-builtins */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global.WHATWGFetch = {})));
+    // eslint-disable-next-line no-undef
+    typeof define === 'function' && define.amd ? define(['exports'], factory) :
+      (factory((global.WHATWGFetch = {})));
 }(this, (function (exports) { 'use strict';
 
   var support = {
