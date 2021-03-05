@@ -23,8 +23,7 @@
       margin: auto;
       max-width: 600px;
       font-size: calc(0.75em + 1vw);
-      font-size
-      }
+  }
   
 
 .pokemon-li{
@@ -87,8 +86,13 @@ highlight color */
   overflow: auto; 
   
   /* this is used to center the modal */
-  display: grid;
+  display: none;
   text-align: center;
+}
+
+#modal-container.is-visible {
+  /* CSS for modal container - add your own desired CSS styles here */
+  display: block;
 }
 
 .nextButton {
@@ -163,36 +167,36 @@ highlight color */
   margin-bottom: 0;
 }
 
-.next-button
-.previous-button{
-  
-  
-  
+button.next-button, button.previous-button {
+  outline: none;
+  height: 40px;
+  text-align: center;
+  width: 130px;
+  border-radius: 40px;
+  color: #2a683e;
+  background: #fff;
+  border: 2px solid #2a683e;
+  letter-spacing: 1px;
+  text-shadow: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
-/* .modal p {
-  font-size: 15;
-  margin-top: 5%;
-  margin-bottom: 5%;
-  
-} */
-
-
-#modal-container {
-  display: none;
-}
-
-#modal-container.is-visible {
-  /* CSS for modal container - add your own desired CSS styles here */
-  display: block;
-}
-
-.image-pokemon{
+.image-pokemon {
+  filter: drop-shadow(5px 5px 5px #222);
   width: 100%;
   max-width: 150px;
   max-height: 150px;
-  display:block;
+  display: block;
   margin: 25px;
-  margin:auto;
+  margin:auto
+}
 
+.pokemon-title {
+ 
+  color: #777;
+}
+
+.pokemon-title::first-letter {
+  text-transform: uppercase;
 }
