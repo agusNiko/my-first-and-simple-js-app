@@ -18,5 +18,5 @@ Project dependencies:
 Which API the project uses
    The app fetches information from the Pokémon API: https://pokeapi.co/
 
-Note 
+Note: 
 	  The code between comments represent the code I use during the learning and development process of the app 
