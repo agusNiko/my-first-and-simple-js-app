@@ -5,33 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>My First JS App</title>
     <link rel="shortcut icon" type="image/x-icon" href="./css/img/favicon.ico" >
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"> 
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
   </head>
   <body>
     <header>
-      <img src ="css/img/pokemon_pokeball-wallpaper-2560x1440.jpg" alt ="pokemon wallpaper" width= "100%" >
+      <img class="pokemon-wallpaper" src ="css/img/pokemon_pokeball-wallpaper-2560x1440.jpg" alt ="pokemon wallpaper">
     </header>
     <main>
       <div class="loading-message"></div>
 
       <!-- <button id='show-dialog'>
         Show dialog
-      </button> --> 
+      </button> -->
       <!-- this button is for the show dialog function. see JS doc -->
 
-      <div id='modal-container'>
+      <div id="modal-container">
       </div>
-      
+
       <ul class="pokemon-list"></ul>
-      
 
     </main>
     <script src="js/promise-polyfill.js"></script>
     <script src="js/fetch-polyfill.js"></script>
-    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>   <!-- polyfill for Touch Interactions via Pointer Events in safari -->  
+    <script src="https://code.jquery.com/pep/0.4.3/pep.js"></script>   <!-- polyfill for Touch Interactions via Pointer Events in safari -->
     <script src="js/script.js"></script>
   </body>
 </html>
