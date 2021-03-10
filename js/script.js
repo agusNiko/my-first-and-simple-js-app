@@ -1,351 +1,351 @@
 
 let pokemonRepository = (function() {
-    let pokemonList = [];                //defining the variable pokemon list as an blank Array
-    let apiUrl='https://pokeapi.co/api/v2/pokemon/?limit=150'; //the API
+  let pokemonList = [];                //defining the variable pokemon list as an blank Array
+  let apiUrl='https://pokeapi.co/api/v2/pokemon/?limit=150'; //the API
         
-        // this wraps the pokemonList array in an Immediately Invoked Function Expression (IIFE) to avoid accidentally accessing the global state.
-    function add(pokemon) {
-        properties = Object.keys(pokemon)
+  // this wraps the pokemonList array in an Immediately Invoked Function Expression (IIFE) to avoid accidentally accessing the global state.
+  function add(pokemon) {
+    properties = Object.keys(pokemon)
 
-             //the first conditional control if the pokemon that is trying to be added is an object. the second controls if the properties match the desired properties. 
-            if (typeof pokemon === 'object'){ 
-                if( properties[0] === "name" && 
-                properties[1] === "detailsUrl" 
-                ) {
-                    pokemonList.push(pokemon);
-                } else {
-                    let stringifiedObject = JSON.stringify(pokemon);
-                   alert(`${stringifiedObject} wrong format, the pokemon can not be added`)
-                    }
-            } else {
-                alert(`${pokemon} is not a pokemon`);        
-            }
-    }
-
-    function getAll() {
-        return pokemonList;
-    }
-
-    function loadList() { 
-        
-        showLoadingMessage();
-                
-        return fetch(apiUrl).then(function (response) {
-
-            return response.json();
-
-        }).then(function (json) {
-            hideLoadingMessage();
-            json.results.forEach(function (item) { //json is the API object in json format. result is the Key of the object whose values are the pokemons. this also creates an object forEach pokemon
-                let pokemon = {
-                name: item.name,
-                detailsUrl: item.url
-                };
-                add(pokemon); // add the newly created object to the pokemon list array
-            });
-        }).catch(function (e) {
-            hideLoadingMessage();
-            console.error(e);
-        })
+    //the first conditional control if the pokemon that is trying to be added is an object. the second controls if the properties match the desired properties. 
+    if (typeof pokemon === 'object'){ 
+      if( properties[0] === 'name' && 
+                properties[1] === 'detailsUrl' 
+      ) {
+        pokemonList.push(pokemon);
+      } else {
+        let stringifiedObject = JSON.stringify(pokemon);
+        alert(`${stringifiedObject} wrong format, the pokemon can not be added`)
       }
+    } else {
+      alert(`${pokemon} is not a pokemon`);        
+    }
+  }
+
+  function getAll() {
+    return pokemonList;
+  }
+
+  function loadList() { 
+        
+    showLoadingMessage();
+                
+    return fetch(apiUrl).then(function (response) {
+
+      return response.json();
+
+    }).then(function (json) {
+      hideLoadingMessage();
+      json.results.forEach(function (item) { //json is the API object in json format. result is the Key of the object whose values are the pokemons. this also creates an object forEach pokemon
+        let pokemon = {
+          name: item.name,
+          detailsUrl: item.url
+        };
+        add(pokemon); // add the newly created object to the pokemon list array
+      });
+    }).catch(function (e) {
+      hideLoadingMessage();
+      console.error(e);
+    })
+  }
      
 
-    function addListItem(pokemon){
-        let ulItem = document.querySelector('.pokemon-list');
-        let listItem = document.createElement('li');
-        ulItem.appendChild(listItem);
-        listItem.classList.add('pokemon-li');
+  function addListItem(pokemon){
+    let ulItem = document.querySelector('.pokemon-list');
+    let listItem = document.createElement('li');
+    ulItem.appendChild(listItem);
+    listItem.classList.add('pokemon-li');
     
-        let newButton = document.createElement('button');
-        newButton.innerText = `${pokemon.name}`;  
-        listItem.appendChild(newButton);
-        newButton.classList.add('pokemon-button');
+    let newButton = document.createElement('button');
+    newButton.innerText = `${pokemon.name}`;  
+    listItem.appendChild(newButton);
+    newButton.classList.add('pokemon-button');
 
-        // newButton.addEventListener('click', function () { //----this code is to practice the createEventListener() inside the function and outside the function and  
-        //     console.log('name: ' + pokemon.name) 
-        //     //showModal (showModal (pokemon.name, 'height: ' + pokemon.height, 'type: ' + pokemon.types, pokemon.image));       
-        // });  // creates a event listener, when the button is clicked console logs the name... here the function is define as the second parameter.
+    // newButton.addEventListener('click', function () { //----this code is to practice the createEventListener() inside the function and outside the function and  
+    //     console.log('name: ' + pokemon.name) 
+    //     //showModal (showModal (pokemon.name, 'height: ' + pokemon.height, 'type: ' + pokemon.types, pokemon.image));       
+    // });  // creates a event listener, when the button is clicked console logs the name... here the function is define as the second parameter.
         
-        newButton.addEventListener('click', function () {
-            showDetails(pokemon);               
-        }); // creates a event listener, when the button is clicked console logs the type... similar to the last one but here the function is define outside the addListItem fuction. and called as 2d parameter
+    newButton.addEventListener('click', function () {
+      showDetails(pokemon);               
+    }); // creates a event listener, when the button is clicked console logs the type... similar to the last one but here the function is define outside the addListItem fuction. and called as 2d parameter
         
-        //showDetailsFromOutside(newButton, pokemon); // here the event listener is declare as a function outside, when the button is clicked console logs the height... this code is to practice the createEventListener() inside the function and outside the function and  
-    }
+    //showDetailsFromOutside(newButton, pokemon); // here the event listener is declare as a function outside, when the button is clicked console logs the height... this code is to practice the createEventListener() inside the function and outside the function and  
+  }
 
-    function showDetails(pokemon){
-        let index = pokemonList.indexOf(pokemon);
-        let nextPokemon = pokemonList[index + 1]
-        let previousPokemon = pokemonList[index - 1]
-        loadDetails(pokemon).then(function(){
+  function showDetails(pokemon){
+    let index = pokemonList.indexOf(pokemon);
+    let nextPokemon = pokemonList[index + 1]
+    let previousPokemon = pokemonList[index - 1]
+    loadDetails(pokemon).then(function(){
            
-            showModal (pokemon.name, pokemon.height, pokemon.types, pokemon.image, nextPokemon, previousPokemon);
-        })
-        }
+      showModal (pokemon.name, pokemon.height, pokemon.types, pokemon.image, nextPokemon, previousPokemon);
+    })
+  }
     
 
-    // function showDetailsFromOutside (button, pokemon) { //
-    //     button.addEventListener('click', function () {
-    //         loadDetails(pokemon).then(function(){
-    //             showModal (pokemon.name, 'height: ' + pokemon.height, 'type: ' + pokemon.types, pokemon.image);
-    //         }); 
-   // })}; // this funcion is to be called from addListItem to listen to the click of a previously created button 
+  // function showDetailsFromOutside (button, pokemon) { //
+  //     button.addEventListener('click', function () {
+  //         loadDetails(pokemon).then(function(){
+  //             showModal (pokemon.name, 'height: ' + pokemon.height, 'type: ' + pokemon.types, pokemon.image);
+  //         }); 
+  // })}; // this funcion is to be called from addListItem to listen to the click of a previously created button 
      
 
   //-------------------fetch pokemon list from API----
 
-    function loadDetails(item) {
-        console.log(item);
-        showLoadingMessage ();
-        let url = item.detailsUrl;
-        return fetch(url).then(function (response) {
-            return response.json();
-        }).then(function (details) { //details is the parameter that would be the return value of the previous function
-            // Now we add the details to the item
-            hideLoadingMessage();
-            item.imageUrl = details.sprites.front_default; //sprites is the key of the object with the imgs
-            item.height = details.height;
-            item.image = details.sprites.other.dream_world.front_default;
-            item.types = []; 
+  function loadDetails(item) {
+    console.log(item);
+    showLoadingMessage ();
+    let url = item.detailsUrl;
+    return fetch(url).then(function (response) {
+      return response.json();
+    }).then(function (details) { //details is the parameter that would be the return value of the previous function
+      // Now we add the details to the item
+      hideLoadingMessage();
+      item.imageUrl = details.sprites.front_default; //sprites is the key of the object with the imgs
+      item.height = details.height;
+      item.image = details.sprites.other.dream_world.front_default;
+      item.types = []; 
             
-            details.types.forEach(function(pokemon){
-                item.types.push(pokemon.type.name)
-            })
-        }).catch(function (e) {
-           hideLoadingMessage();
-           console.error(e);
-        });
-    }
+      details.types.forEach(function(pokemon){
+        item.types.push(pokemon.type.name)
+      })
+    }).catch(function (e) {
+      hideLoadingMessage();
+      console.error(e);
+    });
+  }
     
-    function showLoadingMessage (){
-        let loadingContainer = document.querySelector('.loading-message');
-        let loadingMessage = document.createElement('h1');
-        loadingMessage.innerText='Loading list...'
+  function showLoadingMessage (){
+    let loadingContainer = document.querySelector('.loading-message');
+    let loadingMessage = document.createElement('h1');
+    loadingMessage.innerText='Loading list...'
        
-        loadingContainer.appendChild(pokeball);
-        pokeball.appendChild(pokebalRed);
-        pokeball.appendChild(pokebalwhite);
+    loadingContainer.appendChild(pokeball);
+    pokeball.appendChild(pokebalRed);
+    pokeball.appendChild(pokebalwhite);
 
-        return loadingContainer.appendChild(loadingMessage);
-    };
+    return loadingContainer.appendChild(loadingMessage);
+  }
 
-    function hideLoadingMessage(){
-        let elementToRemove = document.querySelector('.loading-message');
-        let remove = document.querySelector('h1')
+  function hideLoadingMessage(){
+    let elementToRemove = document.querySelector('.loading-message');
+    let remove = document.querySelector('h1')
 
         
-        let removeIt = document.querySelector('.pokeball');
-        elementToRemove.removeChild(removeIt)
-        return elementToRemove.removeChild(remove)
-    };
+    let removeIt = document.querySelector('.pokeball');
+    elementToRemove.removeChild(removeIt)
+    return elementToRemove.removeChild(remove)
+  }
 
 
 
-    let pokeball = document.createElement('div');
-    pokeball.classList.add('pokeball');
+  let pokeball = document.createElement('div');
+  pokeball.classList.add('pokeball');
      
-    let pokebalRed = document.createElement('div');
-     pokebalRed.classList.add('pokeball-red');  
+  let pokebalRed = document.createElement('div');
+  pokebalRed.classList.add('pokeball-red');  
         
-    let pokebalwhite = document.createElement('div');
-    pokebalwhite.classList.add('pokebal-white');
+  let pokebalwhite = document.createElement('div');
+  pokebalwhite.classList.add('pokebal-white');
 
-    function showLoadingPokeball() {
-      imageContainer.innerText = '';
+  function showLoadingPokeball() {
+    imageContainer.innerText = '';
       
-      imageContainer.appendChild(pokeball);
-      pokeball.appendChild(pokebalRed);
-      pokeball.appendChild(pokebalwhite);
-    };
+    imageContainer.appendChild(pokeball);
+    pokeball.appendChild(pokebalRed);
+    pokeball.appendChild(pokebalwhite);
+  }
 
-    function hideLoadingPokeball (){
-      let removePokeball = document.querySelector('.image-container');
-      let remove = document.querySelector('.pokeball');
-      return removePokeball.removeChild(remove)
-    };
-
-
+  function hideLoadingPokeball (){
+    let removePokeball = document.querySelector('.image-container');
+    let remove = document.querySelector('.pokeball');
+    return removePokeball.removeChild(remove)
+  }
 
 
-        // --------------------- Modal Code
-    let modalContainer = document.querySelector('#modal-container');
-    let imageContainer = document.createElement('div');
-    imageContainer.classList.add('image-container')
+
+
+  // --------------------- Modal Code
+  let modalContainer = document.querySelector('#modal-container');
+  let imageContainer = document.createElement('div');
+  imageContainer.classList.add('image-container')
    
 
-    function showModal (title, text, type, imgUrl, nextPokemon, previousPokemon) {
+  function showModal (title, text, type, imgUrl, nextPokemon, previousPokemon) {
 
-        text = 'height: ' + text;
-        type = 'type: ' + type;
+    text = 'height: ' + text;
+    type = 'type: ' + type;
         
-                //next, we add the content of the modal with js...
+    //next, we add the content of the modal with js...
 
-        modalContainer.innerText = ''; // clear all existing code (important cause it clean the previous pokemon info).
+    modalContainer.innerText = ''; // clear all existing code (important cause it clean the previous pokemon info).
 
-            //crate the div .modal.
-        let modal = document.createElement('div');
-        modal.classList.add('modal');
-            modalContainer.appendChild(modal);
+    //crate the div .modal.
+    let modal = document.createElement('div');
+    modal.classList.add('modal');
+    modalContainer.appendChild(modal);
         
-            // add modal content: 
+    // add modal content: 
     
   
-             //Close button             
-        let modalClose = document.createElement('button');
-        modalClose.classList.add('modal-close');
-        modalClose.innerText = 'Close';
-            modal.appendChild(modalClose);
+    //Close button             
+    let modalClose = document.createElement('button');
+    modalClose.classList.add('modal-close');
+    modalClose.innerText = 'Close';
+    modal.appendChild(modalClose);
 
-        modalClose.addEventListener('click', function () { //calls the hideModal() so removes the .is-visible. it Has to be call from inside this function because here is the created element.
-                hideModal (); 
-            });
-                //Modal title
-        let tittleElement = document.createElement('h1');
-        tittleElement.innerText = title;
-            modal.appendChild(tittleElement);
+    modalClose.addEventListener('click', function () { //calls the hideModal() so removes the .is-visible. it Has to be call from inside this function because here is the created element.
+      hideModal (); 
+    });
+    //Modal title
+    let tittleElement = document.createElement('h1');
+    tittleElement.innerText = title;
+    modal.appendChild(tittleElement);
 
-                //modal Paragraf
-        let contentElement = document.createElement('p');
-        contentElement.innerText = text;
-            modal.appendChild(contentElement);
+    //modal Paragraf
+    let contentElement = document.createElement('p');
+    contentElement.innerText = text;
+    modal.appendChild(contentElement);
 
-               //modal Paragraf 2; 
-        let typeElement = document.createElement('p');
-        typeElement.innerText = type;
-            modal.appendChild(typeElement);
+    //modal Paragraf 2; 
+    let typeElement = document.createElement('p');
+    typeElement.innerText = type;
+    modal.appendChild(typeElement);
 
-               // add imgage
+    // add imgage
 
-        modal.appendChild(imageContainer);
+    modal.appendChild(imageContainer);
 
        
-            showLoadingPokeball()
+    showLoadingPokeball()
         
-        let promiseToReturn = new Promise(function (resolve, reject) {
-          let imageElement = new Image();
-          setTimeout(function(){
-          imageElement.src = imgUrl;
-          imageElement.classList.add('image-pokemon')
-            if(imageElement) {
-              resolve(imageElement);
-            }else{
-              reject('The promise has been rejected');
-            } 
-          }, 1000);
-          });
+    let promiseToReturn = new Promise(function (resolve, reject) {
+      let imageElement = new Image();
+      setTimeout(function(){
+        imageElement.src = imgUrl;
+        imageElement.classList.add('image-pokemon')
+        if(imageElement) {
+          resolve(imageElement);
+        }else{
+          reject('The promise has been rejected');
+        } 
+      }, 1000);
+    });
     
         
-        promiseToReturn.then(function(result){
-          hideLoadingPokeball();
-          imageContainer.appendChild(result)
-          }).catch(function(error){
-              console.log(error)
-          });
+    promiseToReturn.then(function(result){
+      hideLoadingPokeball();
+      imageContainer.appendChild(result)
+    }).catch(function(error){
+      console.log(error)
+    });
 
            
           
           
-        // let imageElement = new Image();
-        // imageElement.src = imgUrl;
-        // imageElement.classList.add('image-pokemon')
+    // let imageElement = new Image();
+    // imageElement.src = imgUrl;
+    // imageElement.classList.add('image-pokemon')
         
-        // imageContainer.appendChild(imageElement);
+    // imageContainer.appendChild(imageElement);
 
 
-           // -------------------next button
+    // -------------------next button
               
 
-        let nextPreviousConteiner = document.createElement('div');
-        nextPreviousConteiner.classList.add('next-previous-container')
-            modal.appendChild(nextPreviousConteiner);
+    let nextPreviousConteiner = document.createElement('div');
+    nextPreviousConteiner.classList.add('next-previous-container')
+    modal.appendChild(nextPreviousConteiner);
 
-            if (previousPokemon !== undefined){
-                let previousButton = document.createElement('button');
-                previousButton.classList.add('previous-button');
-                previousButton.innerText = 'previous';
+    if (previousPokemon !== undefined){
+      let previousButton = document.createElement('button');
+      previousButton.classList.add('previous-button');
+      previousButton.innerText = 'previous';
                 
-                nextPreviousConteiner.appendChild(previousButton);
+      nextPreviousConteiner.appendChild(previousButton);
     
-                previousButton.addEventListener('click', function () { 
-                    hideModal (); 
+      previousButton.addEventListener('click', function () { 
+        hideModal (); 
                 
-                    showDetails(previousPokemon);
-                });
-            }
+        showDetails(previousPokemon);
+      });
+    }
 
-        let extraDiv = document.createElement('div');
-        nextPreviousConteiner.appendChild(extraDiv);
+    let extraDiv = document.createElement('div');
+    nextPreviousConteiner.appendChild(extraDiv);
 
-        if (nextPokemon !== undefined){
-            let nextButton = document.createElement('button');
-            nextButton.classList.add('next-button');
-            nextButton.innerText = 'next';
-            nextPreviousConteiner.appendChild(nextButton);
+    if (nextPokemon !== undefined){
+      let nextButton = document.createElement('button');
+      nextButton.classList.add('next-button');
+      nextButton.innerText = 'next';
+      nextPreviousConteiner.appendChild(nextButton);
 
-                nextButton.addEventListener('click', function () { 
-                hideModal (); 
+      nextButton.addEventListener('click', function () { 
+        hideModal (); 
 
-                showDetails(nextPokemon);
-            });
-        }
+        showDetails(nextPokemon);
+      });
+    }
             
 
-            //-------------------
+    //-------------------
       
-            //hide modal clicking outside the modal
-        modalContainer.addEventListener('click', (e) => {
-            let target = e.target;
-            if (target === modalContainer){
-                hideModal();
-            }
-        })
+    //hide modal clicking outside the modal
+    modalContainer.addEventListener('click', (e) => {
+      let target = e.target;
+      if (target === modalContainer){
+        hideModal();
+      }
+    })
 
-        modalContainer.classList.add('is-visible'); // adds the .is-visible to the #modal-container making it visible.
-    };
+    modalContainer.classList.add('is-visible'); // adds the .is-visible to the #modal-container making it visible.
+  }
 
  
 
-    let dialogPromiseReject; // This can be set later, by showDialog
+  let dialogPromiseReject; // This can be set later, by showDialog
 
-    function hideModal () {
-        modalContainer.classList.remove('is-visible')
+  function hideModal () {
+    modalContainer.classList.remove('is-visible')
 
-        if (dialogPromiseReject) {
-                dialogPromiseReject();
-                dialogPromiseReject = null;
-          };
+    if (dialogPromiseReject) {
+      dialogPromiseReject();
+      dialogPromiseReject = null;
     }
+  }
 
 
-    //hide the modal by pressing Escape.    
-    window.addEventListener('keydown', (e) => { 
+  //hide the modal by pressing Escape.    
+  window.addEventListener('keydown', (e) => { 
        
-        if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
-            hideModal();
-        }
-    } );
+    if (e.key === 'Escape' && modalContainer.classList.contains('is-visible')) {
+      hideModal();
+    }
+  } );
    
-    return {
-        add: add,
-        getAll: getAll,
-        addListItem: addListItem,
-        showDetails: showDetails,
-        //showDetailsFromOutside: showDetailsFromOutside,
-        loadList: loadList,
-        loadDetails: loadDetails,
-        showLoadingMessage: showLoadingMessage,
-        hideLoadingMessage: hideLoadingMessage,
-        showLoadingPokeball: showLoadingPokeball,
-        hideLoadingPokeball: hideLoadingPokeball
+  return {
+    add: add,
+    getAll: getAll,
+    addListItem: addListItem,
+    showDetails: showDetails,
+    //showDetailsFromOutside: showDetailsFromOutside,
+    loadList: loadList,
+    loadDetails: loadDetails,
+    showLoadingMessage: showLoadingMessage,
+    hideLoadingMessage: hideLoadingMessage,
+    showLoadingPokeball: showLoadingPokeball,
+    hideLoadingPokeball: hideLoadingPokeball
 
         
-    };
+  };
 })();
 
 pokemonRepository.loadList().then(function() {
-    pokemonRepository.getAll().forEach(function(pokemon){  
-        pokemonRepository.addListItem(pokemon)
-    });    
+  pokemonRepository.getAll().forEach(function(pokemon){  
+    pokemonRepository.addListItem(pokemon)
+  });    
 });
 
 
