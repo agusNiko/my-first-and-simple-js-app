@@ -221,38 +221,19 @@ let pokemonRepository = (function() {
        
     showLoadingPokeball()
         
-    let promiseToReturn = new Promise(function (resolve, reject) {
-      let imageElement = new Image();
-      setTimeout(function(){
-        imageElement.src = imgUrl;
-        imageElement.classList.add('image-pokemon')
-        if(imageElement) {
-          resolve(imageElement);
-        }else{
-          reject('The promise has been rejected');
-        } 
-      }, 1000);
-    });
-    
-        
-    promiseToReturn.then(function(result){
+
+    let imageElement = new Image();
+   
+    imageElement.src = imgUrl;
+    imageElement.classList.add('image-pokemon')
+    imageContainer.appendChild(imageElement)
+    imageElement.addEventListener('load', function (){
       hideLoadingPokeball();
-      imageContainer.appendChild(result)
-    }).catch(function(error){
-      console.log(error)
-    });
-
-           
-          
-          
-    // let imageElement = new Image();
-    // imageElement.src = imgUrl;
-    // imageElement.classList.add('image-pokemon')
-        
-    // imageContainer.appendChild(imageElement);
+    })
+       
 
 
-    // -------------------next button
+    // ---------- ----- --------next button
               
 
     let nextPreviousConteiner = document.createElement('div');
