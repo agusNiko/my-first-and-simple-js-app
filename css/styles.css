@@ -15,7 +15,7 @@
   }
 
   ul {
-    padding: 0%;
+    padding: 0;
   }
  
   p,
@@ -68,7 +68,6 @@ highlight color */
   background-color: #0039A8;
 }
 
-
 /* MODAL */
 #modal-container {
   position: fixed;
@@ -106,6 +105,36 @@ highlight color */
   margin: 25px;
   margin:auto
 }
+
+.pokeball{
+  padding-top: 10px;
+  width: 100%;
+  max-width: 150px;
+  max-height: 150px;
+  margin: auto;
+  animation: shake 1.25s ease-in-out infinite;
+}
+.pokeball-red{
+  width: 150px;
+  height: 75px; /* as the half of the width */
+  background-color: #CC0000;
+  border-top-left-radius: 110px;  /* 100px of height + 10px of border */
+  border-top-right-radius: 110px; /* 100px of height + 10px of border */
+  border: 2.5px solid rgb(34, 34, 34);
+  border-bottom: 0;
+}
+
+.pokeball-white{
+  width: 150px;
+  height: 75px; /* as the half of the width */
+  background-color: #fcfcfc;
+  border-bottom-left-radius: 100px;  /* 100px of height + 10px of border */
+  border-bottom-right-radius: 100px; /* 100px of height + 10px of border */
+  border: 2.5px solid rgb(34, 34, 34);
+  background: #fff;
+  box-shadow: inset -15px -2px 0px 0px #ccc
+}
+
 
 .modal {
   margin: auto;
@@ -207,37 +236,10 @@ button.previous-button:hover {
 }
 
 
-.pokeball{
-  width: 200px;
-  height: 200px;
-  margin: auto;
-  animation: shake 1.25s ease-in-out infinite;
-  
-}
-.pokeball-red{
-  width: 200px;
-  height: 100px; /* as the half of the width */
-  background-color: #CC0000;
-  border-top-left-radius: 110px;  /* 100px of height + 10px of border */
-  border-top-right-radius: 110px; /* 100px of height + 10px of border */
-  border: 5px solid rgb(34, 34, 34);
-  border-bottom: 0;
-}
-
-.pokebal-white{
-  width: 200px;
-  height: 100px; /* as the half of the width */
-  background-color: #fcfcfc;
-  border-bottom-left-radius: 100px;  /* 100px of height + 10px of border */
-  border-bottom-right-radius: 100px; /* 100px of height + 10px of border */
-  border: 5px solid rgb(34, 34, 34);
-  background: #fff;
-  box-shadow: inset -15px -2px 0px 0px #ccc
-}
 
 
 @keyframes shake {
-  0  {transform: translate(0, 0) rotate(0);}
+  0%  {transform: translate(0, 0) rotate(0);}
   20% { transform: translate(10px, 0) rotate(20deg); }
   30% { transform: translate(-10px, 0) rotate(-20deg); }
   50% { transform: translate(10px, 0) rotate(10deg); }
@@ -245,4 +247,8 @@ button.previous-button:hover {
   100% { transform: translate(0, 0) rotate(0); }
 }
 
- 
+.loading-message{
+  position: fixed;
+  margin-left: 20px;
+  background-color: #181818a9;
+}

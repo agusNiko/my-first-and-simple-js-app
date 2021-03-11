@@ -1,11 +1,11 @@
 
-let pokemonRepository = (function() {
-  let pokemonList = [];                //defining the variable pokemon list as an blank Array
-  let apiUrl='https://pokeapi.co/api/v2/pokemon/?limit=150'; //the API
+const pokemonRepository = (function() {
+  const pokemonList = [];                //defining the variable pokemon list as an blank Array
+  const apiUrl='https://pokeapi.co/api/v2/pokemon/?limit=150'; //the API
         
   // this wraps the pokemonList array in an Immediately Invoked Function Expression (IIFE) to avoid accidentally accessing the global state.
   function add(pokemon) {
-    properties = Object.keys(pokemon)
+    let properties = Object.keys(pokemon)
 
     //the first conditional control if the pokemon that is trying to be added is an object. the second controls if the properties match the desired properties. 
     if (typeof pokemon === 'object'){ 
@@ -61,16 +61,9 @@ let pokemonRepository = (function() {
     listItem.appendChild(newButton);
     newButton.classList.add('pokemon-button');
 
-    // newButton.addEventListener('click', function () { //----this code is to practice the createEventListener() inside the function and outside the function and  
-    //     console.log('name: ' + pokemon.name) 
-    //     //showModal (showModal (pokemon.name, 'height: ' + pokemon.height, 'type: ' + pokemon.types, pokemon.image));       
-    // });  // creates a event listener, when the button is clicked console logs the name... here the function is define as the second parameter.
-        
     newButton.addEventListener('click', function () {
       showDetails(pokemon);               
-    }); // creates a event listener, when the button is clicked console logs the type... similar to the last one but here the function is define outside the addListItem fuction. and called as 2d parameter
-        
-    //showDetailsFromOutside(newButton, pokemon); // here the event listener is declare as a function outside, when the button is clicked console logs the height... this code is to practice the createEventListener() inside the function and outside the function and  
+    }); // creates a event listener, when the button is clicked console logs the type... similar to the last one but here the function is define outside the addListItem function. and called as 2d parameter
   }
 
   function showDetails(pokemon){
@@ -84,12 +77,6 @@ let pokemonRepository = (function() {
   }
     
 
-  // function showDetailsFromOutside (button, pokemon) { //
-  //     button.addEventListener('click', function () {
-  //         loadDetails(pokemon).then(function(){
-  //             showModal (pokemon.name, 'height: ' + pokemon.height, 'type: ' + pokemon.types, pokemon.image);
-  //         }); 
-  // })}; // this funcion is to be called from addListItem to listen to the click of a previously created button 
      
 
   //-------------------fetch pokemon list from API----
@@ -120,11 +107,12 @@ let pokemonRepository = (function() {
   function showLoadingMessage (){
     let loadingContainer = document.querySelector('.loading-message');
     let loadingMessage = document.createElement('h1');
-    loadingMessage.innerText='Loading list...'
+    
+    loadingMessage.innerText='Loading list...';
        
     loadingContainer.appendChild(pokeball);
-    pokeball.appendChild(pokebalRed);
-    pokeball.appendChild(pokebalwhite);
+    pokeball.appendChild(pokeballRed);
+    pokeball.appendChild(pokeballwhite);
 
     return loadingContainer.appendChild(loadingMessage);
   }
@@ -144,18 +132,18 @@ let pokemonRepository = (function() {
   let pokeball = document.createElement('div');
   pokeball.classList.add('pokeball');
      
-  let pokebalRed = document.createElement('div');
-  pokebalRed.classList.add('pokeball-red');  
+  let pokeballRed = document.createElement('div');
+  pokeballRed.classList.add('pokeball-red');  
         
-  let pokebalwhite = document.createElement('div');
-  pokebalwhite.classList.add('pokebal-white');
+  let pokeballwhite = document.createElement('div');
+  pokeballwhite.classList.add('pokeball-white');
 
   function showLoadingPokeball() {
     imageContainer.innerText = '';
       
     imageContainer.appendChild(pokeball);
-    pokeball.appendChild(pokebalRed);
-    pokeball.appendChild(pokebalwhite);
+    pokeball.appendChild(pokeballRed);
+    pokeball.appendChild(pokeballwhite);
   }
 
   function hideLoadingPokeball (){
@@ -204,17 +192,17 @@ let pokemonRepository = (function() {
     tittleElement.innerText = title;
     modal.appendChild(tittleElement);
 
-    //modal Paragraf
+    //modal Paragraph
     let contentElement = document.createElement('p');
     contentElement.innerText = text;
     modal.appendChild(contentElement);
 
-    //modal Paragraf 2; 
+    //modal Paragraph 2; 
     let typeElement = document.createElement('p');
     typeElement.innerText = type;
     modal.appendChild(typeElement);
 
-    // add imgage
+    // add image
 
     modal.appendChild(imageContainer);
 
@@ -236,16 +224,16 @@ let pokemonRepository = (function() {
     // ---------- ----- --------next button
               
 
-    let nextPreviousConteiner = document.createElement('div');
-    nextPreviousConteiner.classList.add('next-previous-container')
-    modal.appendChild(nextPreviousConteiner);
+    let nextPreviousContainer = document.createElement('div');
+    nextPreviousContainer.classList.add('next-previous-container')
+    modal.appendChild(nextPreviousContainer);
 
     if (previousPokemon !== undefined){
       let previousButton = document.createElement('button');
       previousButton.classList.add('previous-button');
       previousButton.innerText = 'previous';
                 
-      nextPreviousConteiner.appendChild(previousButton);
+      nextPreviousContainer.appendChild(previousButton);
     
       previousButton.addEventListener('click', function () { 
         hideModal (); 
@@ -254,14 +242,15 @@ let pokemonRepository = (function() {
       });
     }
 
+    // the objective of the extraDiv is to have at least two elements in the nextPreviousContainer so the css property display: space-between works. ths way when the nextButton in the first pokemon will be  at the right and not at the center
     let extraDiv = document.createElement('div');
-    nextPreviousConteiner.appendChild(extraDiv);
+    nextPreviousContainer.appendChild(extraDiv);
 
     if (nextPokemon !== undefined){
       let nextButton = document.createElement('button');
       nextButton.classList.add('next-button');
       nextButton.innerText = 'next';
-      nextPreviousConteiner.appendChild(nextButton);
+      nextPreviousContainer.appendChild(nextButton);
 
       nextButton.addEventListener('click', function () { 
         hideModal (); 
@@ -284,20 +273,9 @@ let pokemonRepository = (function() {
     modalContainer.classList.add('is-visible'); // adds the .is-visible to the #modal-container making it visible.
   }
 
- 
-
-  let dialogPromiseReject; // This can be set later, by showDialog
-
   function hideModal () {
     modalContainer.classList.remove('is-visible')
-
-    if (dialogPromiseReject) {
-      dialogPromiseReject();
-      dialogPromiseReject = null;
-    }
   }
-
-
   //hide the modal by pressing Escape.    
   window.addEventListener('keydown', (e) => { 
        
@@ -311,15 +289,12 @@ let pokemonRepository = (function() {
     getAll: getAll,
     addListItem: addListItem,
     showDetails: showDetails,
-    //showDetailsFromOutside: showDetailsFromOutside,
     loadList: loadList,
     loadDetails: loadDetails,
     showLoadingMessage: showLoadingMessage,
     hideLoadingMessage: hideLoadingMessage,
     showLoadingPokeball: showLoadingPokeball,
     hideLoadingPokeball: hideLoadingPokeball
-
-        
   };
 })();
 
@@ -327,185 +302,4 @@ pokemonRepository.loadList().then(function() {
   pokemonRepository.getAll().forEach(function(pokemon){  
     pokemonRepository.addListItem(pokemon)
   });    
-});
-
-
-
-//-------     the code between comments represent the code I use during the learning and development process of the app 
-// ------            dialog code        -------------
-//     to use this function it muss be copied inside the Immediately Invoked Function Expression IIFE and adapt the parameter of showDialog() to the new created parameter of showModal()
-//     function showDialog(tittle, text) {
-//         showModal(tittle, text);
-
-//         // add confirm and cancel button to the modal
-//         let modal = modalContainer.querySelector('.modal');
-
-//         let confirmButton = document.createElement('button');
-//         confirmButton.classList.add('modal-confirm');
-//         confirmButton.innerText = 'Confirm';
-
-//         let cancelButton = document.createElement('button');
-//         cancelButton.classList.add('modal-cancel');
-//         cancelButton.innerText = 'Cancel';
-
-//         modal.appendChild(confirmButton);
-//         modal.appendChild(cancelButton);
-
-//         confirmButton.focus();// We want to focus the confirmButton so that the user can simply press Enter
-
-//         return new Promise((resolve, reject) => {
-//             cancelButton.addEventListener('click', hideModal);
-//             confirmButton.addEventListener('click', () => {
-//               dialogPromiseReject = null; // Reset this
-//               hideModal();
-//               resolve();
-//             });
-//             // This can be used to reject from other functions
-//             dialogPromiseReject = reject;
-//           });
-//     };
-
-//     document.querySelector('#show-dialog').addEventListener('click', function () {
-//         showDialog('Confirm action','Are you sure you want to do this?').then(function() {
-//             alert('confirmed!');
-//           }, () => {
-//             alert('not confirmed');
-//           });
-//     }); ------------------------------dialog code ends--------------
-
-
-
-
-
-/*
-
-// I created different variables with the name of the Pokémon, then assigned them a object with its different properties.
-let pikachu =  {
-    name: 'Pikachu', 
-    height:  0.4, 
-    type: 'electric', 
-    abilities: ['Static', 'Lightningrod']
-}; 
-
-let bulbasaur =  {
-    name: 'Bulbasaur', 
-    height:  0.7, 
-    type: 'grass',
-    abilities: ['Chlorophyll', 'Overgrow']
-};
-
-let charmander =  {
-    name: 'Charmander', 
-    height:  0.6, 
-    type: 'fire', 
-    abilities: ['Blaze', 'Solar-power']
-};
-
-let squirtle =  {
-    name: 'Squirtle', 
-    height:  0.5, 
-    type: 'water', 
-    abilities: ['Rain-dish', 'Torrent']
-};
-
-let caterpie = {
-    name: 'Caterpie', 
-    height:  0.3, 
-    type: 'bug', 
-    abilities: ['Shield-dust', 'Run-away']
-};
-
-pokemonRepository.add(pikachu); //with the function .push() I pushed the pokemons into the Aray pokemonList;
-
-pokemonRepository.add(bulbasaur);
-
-pokemonRepository.add(charmander);
-
-pokemonRepository.add(squirtle);
-
-pokemonRepository.add(caterpie);
-
-console.log(pokemonRepository.getAll())
-
-
-
-
-var bugPokemon = pokemonRepository.getAll().filter(function(bugs) {
-    return bugs.type == "bug";
-}); 
-
-// filter bug type pokemons 
- console.log(bugPokemon)
-
-
- let examplePromise = new Promise(function (resolve, reject) {
-    let sum;
-    setTimeout(function(){
-      sum = 5 + 4;
-      if(sum > 10) {
-        resolve(sum);
-      }else{
-        reject('The promise has been rejected');
-      }     
-    }, 0);
-  });
-  
-  console.log('some piece of code');
-
-  examplePromise
-  .then(function(result){
-    console.log(result);
-  })
-  .catch(function(error){
-    console.log(error);
-  });
-  
-  console.log('another piece of code');
-
-
-
-  let venonat = {
-    NAME: 'Venonat', // the Key is Uppercase. it sould show an alert when trying to add it to pokemonRepository
-    height:  1.0, 
-    type: 'bug', 
-    abilities: ['Compoundeyes', 'Tinted-lens']
-};
-pokemonRepository.add(venonat);
- 
-// -------------------------------------------------------this code was replaced by the IIFE     and the for each loop---------------------
-//
-// pokemonList.unshift(pikachu); // similar to push but adds the element at the biginnin
-
-// pokemonList[4] = caterpie; // this comand adds an element at the specified index [4] of the array;
-
-// console.log(pokemonList); 
-
-// function printPokemonList(list/*parameter*///){  declaring a the function
-// for (let i = 0; i < list.length; i++) {
-//     if (list[i].height <= 0.3 ) {
-//         document.write(`<p> ${list[i].name} (height: ${list[i].height}m) - So cute! That's a really tiny Pokémon! </p>`);   
-//     } else {
-//     document.write(`<p> ${list[i].name} (height: ${list[i].height}m)</p>`);    
-//     }
-//   } //this loop write the name of the pokemos and their height in the DOM also uses conditional to determinate the pokemon with a height < or = to 0.3
-// }// printPokemonList()allows us to print in the DOM the list of pokemons from diferent arrays without having to write the loop again.
-  
-// printPokemonList(pokemonList/*argument*/); // calling a the function; */
-
-
-/*   objects with wrong format  to check if the conditionals inside IIFE works.
-pokemonRepository.add('tomate') // this is not a pokemon
-
-let venonat = {
-    NAME: 'Venonat', // the Key is Uppercase. it sould show an alert when trying to add it to pokemonRepository
-    height:  1.0, 
-    type: 'bug', 
-    abilities: ['Compoundeyes', 'Tinted-lens']
-};
-
-pokemonRepository.add(venonat);
-
-//pokemonRepository.unshiftPokemon(venonat);
-*/
-// -------------------------- here I change the "for loop" to a "forEach loop" the result is the same. 
-
+})
